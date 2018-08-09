@@ -57,8 +57,14 @@ public class MainActivity extends AppCompatActivity {
 
     private String mUsername;
 
+<<<<<<< HEAD
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mMessageDatabaseReference;
+=======
+    // Firebase instance variables
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mMessagesDatabaseReference;
+>>>>>>> origin/1.03-firebase-database-read
     private ChildEventListener mChildEventListener;
 
     @Override
@@ -68,8 +74,15 @@ public class MainActivity extends AppCompatActivity {
 
         mUsername = ANONYMOUS;
 
+<<<<<<< HEAD
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mMessageDatabaseReference = mFirebaseDatabase.getReference().child("messages");
+=======
+        // Initialize Firebase components
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+
+        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("messages");
+>>>>>>> origin/1.03-firebase-database-read
 
         // Initialize references to views
         mProgressBar = findViewById(R.id.progressBar);
@@ -119,17 +132,23 @@ public class MainActivity extends AppCompatActivity {
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+<<<<<<< HEAD
                 FriendlyMessage friendlyMessage =
                         new FriendlyMessage(
                                 mMessageEditText.getText().toString(),
                                 mUsername,
                                 null);
+=======
+                FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, null);
+                mMessagesDatabaseReference.push().setValue(friendlyMessage);
+>>>>>>> origin/1.03-firebase-database-read
 
                 mMessageDatabaseReference.push().setValue(friendlyMessage);
                 // Clear input box
                 mMessageEditText.setText("");
             }
         });
+<<<<<<< HEAD
         mChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -149,6 +168,22 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         };
+=======
+
+        mChildEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
+                mMessageAdapter.add(friendlyMessage);
+            }
+
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            public void onCancelled(DatabaseError databaseError) {}
+        };
+        mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
+>>>>>>> origin/1.03-firebase-database-read
     }
 
     @Override
